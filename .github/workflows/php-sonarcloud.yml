@@ -3,7 +3,7 @@ name: Run SonarCloud analysis
 on:
     workflow_call:
         inputs:
-            sonar-project-key:
+            project-key:
                 required: true
                 type: string
         secrets:
@@ -38,7 +38,7 @@ jobs:
                 with:
                     args: >
                         -Dsonar.organization=dontdrinkandroot
-                        -Dsonar.projectKey=${{ inputs.sonar-project-key }}
+                        -Dsonar.projectKey=${{ inputs.project-key }}
                         -Dsonar.exclusions=vendor/**,coverage.clover.xml,log.junit.xml
                         -Dsonar.sourceEncoding=UTF-8
                         -Dsonar.php.tests.reportPaths=log.junit.xml
