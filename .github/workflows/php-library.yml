@@ -15,13 +15,13 @@ jobs:
     phpunit:
         name: "PHPUnit"
         runs-on: ubuntu-latest
-        matrix:
-            php-version:
-                - '${{ inputs.php-version }}'
-            deps:
-                - 'highest'
-                - 'lowest'
-
+        strategy:
+            matrix:
+                php-version:
+                    - '${{ inputs.php-version }}'
+                deps:
+                    - 'highest'
+                    - 'lowest'
         steps:
             -   name: "Checkout"
                 uses: actions/checkout@v3
