@@ -1,0 +1,69 @@
+name: Run PHPUnit tests and Psalm
+
+on:
+    workflow_call:
+        inputs:
+            php-version:
+                required: false
+                type: string
+                default: "8.1"
+        secrets:
+            SONAR_TOKEN:
+                required: true
+
+jobs:
+    phpunit:
+        name: "PHPUnit"
+        runs-on: ubuntu-latest
+        matrix:
+            php-version:
+                - '${{ inputs.php-version }}'
+            deps:
+                - 'highest'
+                - 'lowest'
+
+        steps:
+            -   name: "Checkout"
+                uses: actions/checkout@v3
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    coverage: "pcov"
+                    ini-values: "zend.assertions=1"
+            -   name: "Validate composer"
+                run: "composer validate"
+            -   name: "Install dependencies with Composer"
+                uses: ramsey/composer-install@v2
+                with:
+                    dependency-versions: "${{ matrix.deps }}"
+            -   name: "Run PHPUnit"
+                run: "vendor/bin/phpunit --coverage-clover=coverage.clover.xml --log-junit log.junit.xml"
+                continue-on-error: "${{ matrix.deps == 'lowest' }}"
+            -   name: "Upload coverage"
+                uses: actions/upload-artifact@v3
+                if: matrix.deps == 'highest'
+                with:
+                    name: "coverage"
+                    path: |
+                        coverage.clover.xml
+                        log.junit.xml
+
+    psalm:
+        name: Psalm
+        runs-on: ubuntu-latest
+        env:
+            SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
+        steps:
+            -   name: "Checkout code"
+                uses: actions/checkout@v3
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: ${{ inputs.php-version }}
+            -   name: "Validate composer"
+                run: "composer validate"
+            -   name: "Install dependencies with Composer"
+                uses: ramsey/composer-install@v2
+            -   name: "Run psalm"
+                run: "psalm"
