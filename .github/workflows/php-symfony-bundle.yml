@@ -53,14 +53,14 @@ jobs:
             -   name: "Validate composer"
                 run: "composer validate"
             -   name: "Install dependencies with Composer"
-                uses: "ramsey/composer-install@v2"
+                uses: ramsey/composer-install@v2
                 with:
                     dependency-versions: "${{ matrix.deps }}"
             -   name: "Run PHPUnit"
                 run: "vendor/bin/phpunit --coverage-clover=coverage.clover.xml --log-junit log.junit.xml"
                 continue-on-error: "${{ matrix.deps == 'lowest' }}"
             -   name: "Upload coverage"
-                uses: "actions/upload-artifact@v2"
+                uses: actions/upload-artifact@v3
                 if: matrix.deps == 'highest'
                 with:
                     name: "coverage"
@@ -89,6 +89,6 @@ jobs:
             -   name: "Validate composer"
                 run: "composer validate"
             -   name: "Install dependencies with Composer"
-                uses: "ramsey/composer-install@v2"
+                uses: ramsey/composer-install@v2
             -   name: "Run psalm"
                 run: "psalm"

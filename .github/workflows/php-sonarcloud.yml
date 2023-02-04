@@ -1,11 +1,11 @@
-name: Run SonarCloud analysis
+name: 'Run SonarCloud analysis'
 
 on:
     workflow_call:
         inputs:
             project-key:
                 required: true
-                type: string
+                type: 'string'
         secrets:
             SONAR_TOKEN:
                 required: true
@@ -20,7 +20,7 @@ jobs:
                 with:
                     fetch-depth: 0
             -   name: Download coverage
-                uses: actions/download-artifact@v2
+                uses: actions/download-artifact@v3
                 with:
                     name: coverage
             -   name: Fix code coverage paths
