@@ -43,3 +43,5 @@ jobs:
                         -Dsonar.sourceEncoding=UTF-8
                         -Dsonar.php.tests.reportPaths=log.junit.xml
                         -Dsonar.php.coverage.reportPaths=coverage.clover.xml
+                        -Dsonar.sources=src
+                        -D sonar.tests=tests
