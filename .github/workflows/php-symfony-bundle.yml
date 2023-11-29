@@ -6,11 +6,11 @@ on:
             php-version:
                 required: false
                 type: string
-                default: "8.1"
+                default: "8.2"
             symfony-version:
                 required: false
                 type: string
-                default: "5.4.*"
+                default: "6.4.*"
 
 jobs:
     phpunit:
