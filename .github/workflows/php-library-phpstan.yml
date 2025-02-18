@@ -1,0 +1,31 @@
+name: Run PHPUnit tests and Psalm
+
+on:
+    workflow_call:
+        inputs:
+            php-version:
+                required: false
+                type: string
+                default: "8.4"
+
+    psalm:
+        name: Phpstan
+        runs-on: ubuntu-latest
+        env:
+            SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
+        steps:
+            -   name: "Checkout code"
+                uses: actions/checkout@v3
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: ${{ inputs.php-version }}
+            -   name: "Globally install phpstan"
+                run: |
+                    composer global require --no-progress --no-scripts --no-plugins phpstan/phpstan
+            -   name: "Validate composer"
+                run: "composer validate"
+            -   name: "Install dependencies with Composer"
+                uses: ramsey/composer-install@v2
+            -   name: "Run phpstan"
+                run: "phpstan analyse"
