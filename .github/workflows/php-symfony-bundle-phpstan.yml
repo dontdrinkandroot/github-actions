@@ -1,0 +1,39 @@
+name: Run PHPUnit tests and Psalm
+
+on:
+    workflow_call:
+        inputs:
+            php-version:
+                required: false
+                type: string
+                default: "8.4"
+            symfony-version:
+                required: false
+                type: string
+                default: "6.4.*"
+
+jobs:
+    phpstan:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        env:
+            SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
+        steps:
+            -   name: "Checkout code"
+                uses: actions/checkout@v3
+            -   name: "Install PHP"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: ${{ inputs.php-version }}
+            -   name: "Allow symfony/flex globally"
+                run: "composer global config --no-plugins allow-plugins.symfony/flex true"
+            -   name: "Globally install symfony/flex"
+                run: |
+                    composer global config --no-plugins allow-plugins.symfony/flex true
+                    composer global require --no-progress --no-scripts --no-plugins symfony/flex
+            -   name: "Validate composer"
+                run: "composer validate"
+            -   name: "Install dependencies with Composer"
+                uses: ramsey/composer-install@v2
+            -   name: "Run PHPStan"
+                run: "vendor/bin/phpstan analyse"
