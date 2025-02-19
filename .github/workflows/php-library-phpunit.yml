@@ -38,7 +38,7 @@ jobs:
                 run: "vendor/bin/phpunit --coverage-clover=coverage.clover.xml --log-junit log.junit.xml"
                 continue-on-error: "${{ matrix.deps == 'lowest' }}"
             -   name: "Upload coverage"
-                uses: actions/upload-artifact@v3
+                uses: actions/upload-artifact@v4
                 if: matrix.deps == 'highest'
                 with:
                     name: "coverage"
