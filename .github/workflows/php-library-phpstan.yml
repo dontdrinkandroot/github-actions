@@ -1,4 +1,4 @@
-name: Run PHPUnit tests and Psalm
+name: Run PHPStan
 
 on:
     workflow_call:
@@ -8,8 +8,9 @@ on:
                 type: string
                 default: "8.4"
 
-    psalm:
-        name: Phpstan
+jobs:
+    phpstan:
+        name: PHPStan
         runs-on: ubuntu-latest
         env:
             SYMFONY_REQUIRE: ${{ inputs.symfony-version }}
