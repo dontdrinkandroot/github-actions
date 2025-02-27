@@ -25,12 +25,6 @@ jobs:
                 uses: "shivammathur/setup-php@v2"
                 with:
                     php-version: ${{ inputs.php-version }}
-            -   name: "Allow symfony/flex globally"
-                run: "composer global config --no-plugins allow-plugins.symfony/flex true"
-            -   name: "Globally install symfony/flex"
-                run: |
-                    composer global config --no-plugins allow-plugins.symfony/flex true
-                    composer global require --no-progress --no-scripts --no-plugins symfony/flex
             -   name: "Validate composer"
                 run: "composer validate"
             -   name: "Install dependencies with Composer"
