@@ -41,6 +41,10 @@ jobs:
                     php-version: "${{ matrix.php-version }}"
                     coverage: "pcov"
                     ini-values: "zend.assertions=1"
+            -   name: "Globally install dontdrinkandroot/symfony-version-enforcer"
+                run: |
+                    composer global config allow-plugins.dontdrinkandroot/symfony-version-enforcer true
+                    composer global require dontdrinkandroot/symfony-version-enforcer
             -   name: "Validate composer"
                 run: "composer validate"
             -   name: "Install dependencies with Composer"
